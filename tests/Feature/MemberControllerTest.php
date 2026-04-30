@@ -11,17 +11,12 @@ class MemberControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    // =============================================
-    // Helper — Admin create
-    // =============================================
     private function createAdmin()
     {
         return User::factory()->create(['role' => 'admin']);
     }
 
-    // =============================================
-    // 1. INDEX — Members list பார்க்க
-    // =============================================
+
     public function test_admin_can_view_members_list()
     {
         $admin = $this->createAdmin();
@@ -32,9 +27,7 @@ class MemberControllerTest extends TestCase
         $response->assertViewIs('admin.members');
     }
 
-    // =============================================
-    // 2. CREATE — Create page பார்க்க
-    // =============================================
+
     public function test_admin_can_view_create_member_page()
     {
         $admin = $this->createAdmin();
@@ -45,9 +38,7 @@ class MemberControllerTest extends TestCase
         $response->assertViewIs('admin.create-member');
     }
 
-    // =============================================
-    // 3. STORE — Existing user-ஐ member ஆக்க
-    // =============================================
+
     public function test_admin_can_add_existing_user_as_member()
     {
         $admin = $this->createAdmin();
@@ -107,13 +98,13 @@ class MemberControllerTest extends TestCase
 
         $response->assertRedirect(route('members.index'));
 
-        // User create ஆச்சா?
+        
         $this->assertDatabaseHas('users', [
             'username' => 'newmember',
             'email'    => 'newmember@test.com',
         ]);
 
-        // Member create ஆச்சா?
+
         $user = User::where('username', 'newmember')->first();
         $this->assertDatabaseHas('members', [
             'user_id' => $user->id,
@@ -127,7 +118,7 @@ class MemberControllerTest extends TestCase
         $response = $this->actingAs($admin)->post('/admin/members/register', [
             'username' => 'newmember',
             'email'    => 'new@test.com',
-            'password' => '123', // Too short!
+            'password' => '123', 
         ]);
 
         $response->assertSessionHasErrors(['password']);
@@ -140,16 +131,14 @@ class MemberControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->post('/admin/members/register', [
             'username' => 'another',
-            'email'    => 'existing@test.com', // Already taken!
+            'email'    => 'existing@test.com', 
             'password' => 'password123',
         ]);
 
         $response->assertSessionHasErrors(['email']);
     }
 
-    // =============================================
-    // 5. EDIT — Edit page பார்க்க
-    // =============================================
+
     public function test_admin_can_view_edit_member_page()
     {
         $admin  = $this->createAdmin();
@@ -161,9 +150,7 @@ class MemberControllerTest extends TestCase
         $response->assertViewIs('admin.member-edit');
     }
 
-    // =============================================
-    // 6. UPDATE — Member update பண்ண
-    // =============================================
+
     public function test_admin_can_update_member()
     {
         $admin  = $this->createAdmin();
@@ -183,9 +170,7 @@ class MemberControllerTest extends TestCase
         ]);
     }
 
-    // =============================================
-    // 7. DESTROY — Member delete பண்ண
-    // =============================================
+
     public function test_admin_can_delete_member()
     {
         $admin  = $this->createAdmin();
@@ -198,11 +183,9 @@ class MemberControllerTest extends TestCase
                          ->delete("/admin/members/{$memberId}");
 
         $response->assertRedirect(route('members.index'));
-
-        // Member delete ஆச்சா?
+      
         $this->assertDatabaseMissing('members', ['id' => $memberId]);
 
-        // User delete ஆச்சா?
         $this->assertDatabaseMissing('users', ['id' => $userId]);
     }
 }

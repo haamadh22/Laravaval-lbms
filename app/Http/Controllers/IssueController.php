@@ -82,7 +82,7 @@ class IssueController extends Controller
 
         $returnDate  = now()->toDateString();
         $finePerDay  = 50;
-        $overdueDays = max(0, now()->diffInDays($issue->due_date, false) * -1);
+        $overdueDays = max(0, now()->startOfDay()->diffInDays($issue->due_date, false) * -1);
         $fine        = $overdueDays * $finePerDay;
 
         DB::transaction(function () use ($issue, $returnDate, $fine) {

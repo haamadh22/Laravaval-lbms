@@ -12,9 +12,6 @@ class BookIssueTest extends TestCase
 {
     use RefreshDatabase;
 
-    // =============================================
-    // 1. FILLABLE FIELDS TEST
-    // =============================================
     public function test_book_issue_has_correct_fillable_fields()
     {
         $issue = new BookIssue();
@@ -27,9 +24,6 @@ class BookIssueTest extends TestCase
         $this->assertEquals($expected, $issue->getFillable());
     }
 
-    // =============================================
-    // 2. TABLE NAME TEST
-    // =============================================
     public function test_book_issue_uses_correct_table()
     {
         $issue = new BookIssue();
@@ -37,9 +31,7 @@ class BookIssueTest extends TestCase
         $this->assertEquals('book_issues', $issue->getTable());
     }
 
-    // =============================================
-    // 3. CREATE TEST
-    // =============================================
+
     public function test_book_issue_can_be_created()
     {
         $book   = Book::factory()->create();
@@ -61,9 +53,6 @@ class BookIssueTest extends TestCase
         ]);
     }
 
-    // =============================================
-    // 4. BOOK RELATIONSHIP TEST
-    // =============================================
     public function test_book_issue_belongs_to_book()
     {
         $book   = Book::factory()->create(['title' => 'Laravel Book']);
@@ -78,13 +67,9 @@ class BookIssueTest extends TestCase
             'fine'       => 0,
         ]);
 
-        // Book relationship சரியா வருதா?
         $this->assertEquals('Laravel Book', $issue->book->title);
     }
 
-    // =============================================
-    // 5. MEMBER RELATIONSHIP TEST
-    // =============================================
     public function test_book_issue_belongs_to_member()
     {
         $book   = Book::factory()->create();
@@ -99,13 +84,9 @@ class BookIssueTest extends TestCase
             'fine'       => 0,
         ]);
 
-        // Member relationship சரியா வருதா?
         $this->assertEquals('MBR001', $issue->member->membership_no);
     }
 
-    // =============================================
-    // 6. STATUS UPDATE TEST
-    // =============================================
     public function test_book_issue_status_can_be_updated_to_returned()
     {
         $book   = Book::factory()->create();
@@ -120,7 +101,6 @@ class BookIssueTest extends TestCase
             'fine'       => 0,
         ]);
 
-        // Return பண்ணு
         $issue->update([
             'status'      => 'returned',
             'return_date' => now()->toDateString(),

@@ -17,9 +17,8 @@ class AuthorCategoryTest extends TestCase
         return User::factory()->create(['role' => 'admin']);
     }
 
-    // =============================================
-    // AUTHOR TESTS
-    // =============================================
+
+        //  AUTHOR TESTS
 
     public function test_admin_can_view_authors_page()
     {
@@ -66,9 +65,7 @@ class AuthorCategoryTest extends TestCase
         $this->assertDatabaseMissing('authors', ['id' => $author->id]);
     }
 
-    // =============================================
     // CATEGORY TESTS
-    // =============================================
 
     public function test_admin_can_view_categories_page()
     {

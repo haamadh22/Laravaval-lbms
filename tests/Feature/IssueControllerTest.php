@@ -18,9 +18,6 @@ class IssueControllerTest extends TestCase
         return User::factory()->create(['role' => 'admin']);
     }
 
-    // =============================================
-    // 1. INDEX — Issue page பார்க்க
-    // =============================================
     public function test_admin_can_view_issue_page()
     {
         $admin    = $this->createAdmin();
@@ -30,9 +27,6 @@ class IssueControllerTest extends TestCase
         $response->assertViewIs('admin.issue');
     }
 
-    // =============================================
-    // 2. STORE — Book issue பண்ண
-    // =============================================
     public function test_admin_can_issue_book_to_member()
     {
         $admin  = $this->createAdmin();
@@ -46,14 +40,12 @@ class IssueControllerTest extends TestCase
 
         $response->assertRedirect(route('issue.book'));
 
-        // BookIssue record create ஆச்சா?
         $this->assertDatabaseHas('book_issues', [
             'book_id'   => $book->id,
             'member_id' => $member->id,
             'status'    => 'issued',
         ]);
 
-        // Quantity குறைஞ்சுதா?
         $this->assertDatabaseHas('books', [
             'id'       => $book->id,
             'quantity' => 4,
@@ -66,7 +58,7 @@ class IssueControllerTest extends TestCase
         $member = Member::factory()->create();
 
         $response = $this->actingAs($admin)->post('/admin/book-issue', [
-            'book_id'   => 99999, // Doesn't exist!
+            'book_id'   => 99999,
             'member_id' => $member->id,
         ]);
 
@@ -80,15 +72,12 @@ class IssueControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->post('/admin/book-issue', [
             'book_id'   => $book->id,
-            'member_id' => 99999, // Doesn't exist!
+            'member_id' => 99999,
         ]);
 
         $response->assertSessionHasErrors(['member_id']);
     }
 
-    // =============================================
-    // 3. RETURN INDEX — Return page பார்க்க
-    // =============================================
     public function test_admin_can_view_return_page()
     {
         $admin    = $this->createAdmin();
@@ -98,9 +87,6 @@ class IssueControllerTest extends TestCase
         $response->assertViewIs('admin.return');
     }
 
-    // =============================================
-    // 4. RETURN STORE — Book return பண்ண
-    // =============================================
     public function test_admin_can_return_book()
     {
         $admin  = $this->createAdmin();
@@ -122,13 +108,11 @@ class IssueControllerTest extends TestCase
 
         $response->assertRedirect(route('return.book'));
 
-        // Status returned ஆச்சா?
         $this->assertDatabaseHas('book_issues', [
             'id'     => $issue->id,
             'status' => 'returned',
         ]);
 
-        // Quantity கூடுச்சா?
         $this->assertDatabaseHas('books', [
             'id'       => $book->id,
             'quantity' => 5,
@@ -136,33 +120,29 @@ class IssueControllerTest extends TestCase
     }
 
     public function test_overdue_return_has_fine()
-    {
-        $admin  = $this->createAdmin();
-        $book   = Book::factory()->create(['quantity' => 3]);
-        $member = Member::factory()->create();
+{
+    $admin  = $this->createAdmin();
+    $book   = Book::factory()->create(['quantity' => 3]);
+    $member = Member::factory()->create();
 
-        // 3 days overdue
-        $issue = BookIssue::create([
-            'book_id'    => $book->id,
-            'member_id'  => $member->id,
-            'issue_date' => now()->subDays(10)->toDateString(),
-            'due_date'   => now()->subDays(3)->toDateString(),
-            'status'     => 'issued',
-            'fine'       => 0,
-        ]);
+    // 3 days overdue
+    $issue = BookIssue::create([
+        'book_id'    => $book->id,
+        'member_id'  => $member->id,
+        'issue_date' => now()->subDays(10)->toDateString(),
+        'due_date'   => now()->subDays(3)->toDateString(),
+        'status'     => 'issued',
+        'fine'       => 0,
+    ]);
 
-        $this->actingAs($admin)->post('/admin/return-book', [
-            'return_id' => $issue->id,
-        ]);
+    $this->actingAs($admin)->post('/admin/return-book', [
+        'return_id' => $issue->id,
+    ]);
 
-        // Fine > 0 ஆச்சா? (3 days × Rs.50 = Rs.150)
-        $updated = BookIssue::find($issue->id);
-        $this->assertGreaterThan(0, $updated->fine);
-    }
+    $updated = BookIssue::find($issue->id);
+    $this->assertEquals(150, $updated->fine);
+}
 
-    // =============================================
-    // 5. ISSUED BOOKS PAGE
-    // =============================================
     public function test_admin_can_view_issued_books_page()
     {
         $admin    = $this->createAdmin();
@@ -172,9 +152,6 @@ class IssueControllerTest extends TestCase
         $response->assertViewIs('admin.issued');
     }
 
-    // =============================================
-    // 6. HISTORY PAGE
-    // =============================================
     public function test_admin_can_view_borrow_history_page()
     {
         $admin    = $this->createAdmin();

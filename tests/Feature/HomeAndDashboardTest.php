@@ -12,10 +12,6 @@ class HomeAndDashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    // =============================================
-    // HOME CONTROLLER
-    // =============================================
-
     public function test_landing_page_is_accessible()
     {
         $response = $this->get('/');
@@ -38,10 +34,6 @@ class HomeAndDashboardTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    // =============================================
-    // USER DASHBOARD CONTROLLER
-    // =============================================
 
     public function test_member_can_view_dashboard()
     {
@@ -82,9 +74,6 @@ class HomeAndDashboardTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    // =============================================
-    // ROLE MIDDLEWARE
-    // =============================================
 
     public function test_admin_role_can_access_admin_pages()
     {

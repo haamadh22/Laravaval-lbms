@@ -13,7 +13,7 @@ class MemberFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'       => User::factory(), // ← Auto User create ஆகும்
+            'user_id'       => User::factory(), // ← Auto User create
             'membership_no' => 'MBR' . str_pad(
                                    fake()->unique()->numberBetween(1, 999),
                                    3, '0', STR_PAD_LEFT
