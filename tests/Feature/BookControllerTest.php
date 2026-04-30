@@ -81,27 +81,25 @@ class BookControllerTest extends TestCase
 
 
     public function test_admin_can_update_book()
-    {
-        $admin   = $this->createAdmin();
-        $book    = Book::factory()->create();
-        $newBook = Book::factory()->make();
+{
+    $admin   = $this->createAdmin();
+    $book    = Book::factory()->create();
 
-        $response = $this->actingAs($admin)->put("/admin/books/{$book->id}", [
-            'title'       => 'Updated Title',
-            'author_id'   => $newBook->author_id,
-            'category_id' => $newBook->category_id,
-            'quantity'    => 10,
-            'isbn'        => '999-888',
-        ]);
+    $response = $this->actingAs($admin)->put("/admin/books/{$book->id}", [
+        'title'       => 'Updated Title',
+        'author_id'   => $book->author_id,
+        'category_id' => $book->category_id,
+        'quantity'    => 10,
+        'isbn'        => '999-888',
+    ]);
 
-        $response->assertRedirect(route('books.index'));
-        $this->assertDatabaseHas('books', [
-            'id'       => $book->id,
-            'title'    => 'Updated Title',
-            'quantity' => 10,
-        ]);
-    }
-
+    $response->assertRedirect(route('books.index'));
+    $this->assertDatabaseHas('books', [
+        'id'       => $book->id,
+        'title'    => 'Updated Title',
+        'quantity' => 10,
+    ]);
+}
 
     public function test_admin_can_delete_book()
     {
