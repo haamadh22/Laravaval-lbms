@@ -365,15 +365,15 @@
             </div>
 
             <div class="card-body p-2">
-              <h6 class="fw-bold text-truncate">{{ $b->title }}</h6>
-              <small class="text-dark fw-bold">✍ {{ $b->author ?? '-' }}</small><br>
-              <span class="badge bg-secondary me-2">🏷 {{ $b->category ?? '-' }}</span>
-              <small class="text-muted fw-bolder">ISBN: {{ $b->isbn ?? '-' }}</small>
-              <small class="text-muted d-block">Quantity: {{ $b->quantity ?? '-' }}X</small>
-              <span class="badge {{ $b->quantity > 0 ? 'bg-success' : 'bg-danger' }}">
-                {{ $b->quantity > 0 ? 'Available' : 'Out of Stock' }}
-              </span>
-            </div>
+          <h6 class="fw-bold text-truncate">{{ $b->title }}</h6>
+          <small class="text-dark fw-bold d-block">✍ {{ $b->author ?? '-' }}</small>
+          <small class="text-muted fw-bolder d-block">ISBN: {{ $b->isbn ?? '-' }}</small>
+          <small class="text-muted d-block">Quantity: {{ $b->quantity ?? '-' }}X</small>
+          <span class="badge bg-secondary">🏷 {{ $b->category ?? '-' }}</span>
+          <span class="badge {{ $b->quantity > 0 ? 'bg-success' : 'bg-danger' }}">
+            {{ $b->quantity > 0 ? 'Available' : 'Out of Stock' }}
+          </span>
+        </div>
 
           </div>
         </a>
@@ -402,4 +402,4 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
-</html>
+</html>k
