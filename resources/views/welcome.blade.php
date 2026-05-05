@@ -365,15 +365,70 @@
             </div>
 
             <div class="card-body p-2">
-          <h6 class="fw-bold text-truncate">{{ $b->title }}</h6>
-          <small class="text-dark fw-bold d-block">✍ {{ $b->author ?? '-' }}</small>
-          <small class="text-muted fw-bolder d-block">ISBN: {{ $b->isbn ?? '-' }}</small>
-          <small class="text-muted d-block">Quantity: {{ $b->quantity ?? '-' }}X</small>
-          <span class="badge bg-secondary">🏷 {{ $b->category ?? '-' }}</span>
-          <span class="badge {{ $b->quantity > 0 ? 'bg-success' : 'bg-danger' }}">
-            {{ $b->quantity > 0 ? 'Available' : 'Out of Stock' }}
-          </span>
-        </div>
+
+  {{-- Title --}}
+  <h6 class="fw-bold text-truncate mb-1">{{ $b->title }}</h6>
+
+  {{-- Author --}}
+  <small class="text-dark fw-bold d-block text-truncate mb-1">
+    ✍ {{ $b->author ?? '-' }}
+  </small>
+
+  {{-- ISBN --}}
+  <small class="text-muted fw-bolder d-block text-truncate mb-1">
+    ISBN: {{ $b->isbn ?? '-' }}
+  </small>
+
+  {{-- Quantity --}}
+  <small class="text-muted d-block mb-2">
+    Quantity: {{ $b->quantity ?? '-' }}X
+  </small>
+
+{{-- Category --}}
+<div class="d-flex align-items-center gap-1 mb-1"
+     title="{{ $b->category ?? '-' }}"
+     style="background: #f0eeff;
+            border-left: 3px solid #696cff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            max-width: 100%;
+            overflow: hidden;">
+  <small style="color: #696cff;
+                font-size: 0.82rem;
+                font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;">
+    🏷 {{ $b->category ?? '-' }}
+  </small>
+</div>
+
+  {{-- Available / Out of Stock --}}
+  @if($b->quantity > 0)
+  <span class="badge d-block"
+        style="background: linear-gradient(135deg, #28a745, #20c997);
+               color: #fff;
+               font-size: 0.82rem;
+               font-weight: 700;
+               padding: 6px 10px;
+               border-radius: 6px;
+               letter-spacing: 0.3px;">
+    ● Available
+  </span>
+@else
+  <span class="badge d-block"
+        style="background: linear-gradient(135deg, #dc3545, #ff6b6b);
+               color: #fff;
+               font-size: 0.82rem;
+               font-weight: 700;
+               padding: 6px 10px;
+               border-radius: 6px;
+               letter-spacing: 0.3px;">
+    ● Out of Stock
+  </span>
+@endif
+
+</div>
 
           </div>
         </a>
@@ -391,7 +446,7 @@
 <footer class="content-footer footer bg-footer-theme mt-5">
   <div class="container-xxl text-center py-3">
     © {{ date('Y') }} Imara Library Management System
-    <br><small>Designed for Admin & Library Members</small>
+    <br><small>Designed By MHM HAAMADH</small>
   </div>
 </footer>
 
@@ -402,4 +457,4 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
-</html>k
+</html>
